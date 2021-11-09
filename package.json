@@ -1,6 +1,6 @@
 {
   "name": "nicehash-api-wrapper-v2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "simple api wrapper for nicehash api v2",
   "main": "api.js",
   "scripts": {
