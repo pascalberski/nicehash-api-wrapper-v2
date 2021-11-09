@@ -1,0 +1,1 @@
+# nicehash-api-wrapper-v2
