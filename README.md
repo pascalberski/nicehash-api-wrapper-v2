@@ -34,7 +34,8 @@ Returns the NH-MiningAddress.
 | Parameter | required | type| default | remark |
 | ----- | ----- | ----- | ----- | ----- |
 | none ||||
-<https://www.nicehash.com/docs/rest/get-main-api-v2-mining-miningAddress>
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-miningAddress
 #
 ##### getRigs()
 List rigs and their statuses.
@@ -46,6 +47,7 @@ List rigs and their statuses.
 |sort||enum|NAME|NAME,PROFITABILITY,ACTIVE,INACTIVE
 |system||enum||NHM,NHOS,NHQM
 |status||enum||Mining,Offline
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs2>
 #
 ##### getRigStatsAlgo(?rigid)
@@ -53,6 +55,7 @@ List mining algos with basic statistics for organization (and for rig id if spec
 | Parameter | required | type| default | remark |
 | ----- | ----- | ----- | ----- | ----- |
 |rigid||string|
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-algo-stats>
 #
 ##### getGroupsList(?extendedResponse)
@@ -60,6 +63,7 @@ List of groups with list of rigs in the groups.
 | Parameter | required | type| default | remark |
 | ----- | ----- | ----- | ----- | ----- |
 | extendedResponse ||bool|false|shows more informations|
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-groups-list>
 #
 ##### getRigStatsAlgoStream(rigid, ?algorithm, ?afterTimestamp, ?beforeTimestamp)
@@ -70,6 +74,7 @@ Get statistical streams for selected rigs and selected algorithm.
 |algorithm||int|20|id from algorith (20=daggerhashimoto)|
 |afterTimestamp||int
 |beforeTimestamp||int
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rig-stats-algo>
 #
 ##### getRigStatsUnpaidStream(rigid, ?afterTimestamp, ?beforeTimestamp)
@@ -79,6 +84,7 @@ Get statistical streams for selected rig.
 | rigid |*|string|||
 |afterTimestamp||int
 |beforeTimestamp||int
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rig-stats-unpaid>
 #
 ##### getRigInformation(rigid)
@@ -86,6 +92,7 @@ Get mining rig detailed information for selected rig.
 | Parameter | required | type| default | remark |
 | ----- | ----- | ----- | ----- | ----- |
 | rigid |*|string|
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rig2-rigId>
 #
 ##### getActiveWorkers(?size, ?page, ?sortParameter, ?sortDirection)
@@ -96,6 +103,7 @@ Get a list of active worker.
 |page||int|0
 |sortParameter||enum|RIG_NAME
 |sortDirection||enum|ASC
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-activeWorkers>
 #
 ##### getPayouts(?size, ?page, ?beforeTimestamp)
@@ -105,6 +113,7 @@ Get list of payouts.
 |size||int|10|
 |page||int|0
 |beforeTimestamp||int|
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-payouts>
 #
 ##### getStatsAlgoStream(?algorithm, ?afterTimestamp, ?beforeTimestamp)
@@ -114,6 +123,7 @@ Get statistical streams for all mining rigs for selected algorithm.
 |algorithm||int|20|id of algorithm (20 = daggerhashimoto)
 |afterTimestamp||int
 |beforeTimestamp||int
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-stats-algo>
 #
 ##### getStatsUnpaidStream(?afterTimestamp, ?beforeTimestamp)
@@ -122,6 +132,7 @@ Get statistical streams for all mining rigs.
 | ----- | ----- | ----- | ----- | ----- |
 |afterTimestamp||int
 |beforeTimestamp||int
+
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-stats-unpaid>
 
 
