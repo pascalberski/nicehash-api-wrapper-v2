@@ -1,0 +1,25 @@
+{
+  "name": "nicehash-api-wrapper-v2",
+  "version": "0.0.1",
+  "description": "simple api wrapper for nicehash api v2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pascalberski/nicehash-api-wrapper-v2.git"
+  },
+  "keywords": [
+    "nicehash",
+    "api",
+    "wrapper",
+    "v2"
+  ],
+  "author": "Pascal Berski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pascalberski/nicehash-api-wrapper-v2/issues"
+  },
+  "homepage": "https://github.com/pascalberski/nicehash-api-wrapper-v2#readme"
+}
