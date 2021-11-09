@@ -2,7 +2,7 @@
   "name": "nicehash-api-wrapper-v2",
   "version": "0.0.1",
   "description": "simple api wrapper for nicehash api v2",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/pascalberski/nicehash-api-wrapper-v2/issues"
   },
-  "homepage": "https://github.com/pascalberski/nicehash-api-wrapper-v2#readme"
+  "homepage": "https://github.com/pascalberski/nicehash-api-wrapper-v2#readme",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9"
+  }
 }
