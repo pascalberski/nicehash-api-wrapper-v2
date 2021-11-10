@@ -1,7 +1,7 @@
 # nicehash-api-wrapper-v2
 With this api wrapper you can use the nicehash api v2 in node js. You can read the api documentation here: <https://www.nicehash.com/docs/rest/>.
 
-[![Node.js Package](https://github.com/pascalberski/nicehash-api-wrapper-v2/actions/workflows/npm-publish.yml/badge.svg)](https://www.npmjs.com/package/nicehash-api-wrapper-v2)
+[![Node.js CI](https://github.com/pascalberski/nicehash-api-wrapper-v2/actions/workflows/node.js.yml/badge.svg)](https://www.npmjs.com/package/nicehash-api-wrapper-v2)
 
 ## Getting started
 Run the following code in your npm environment.
