@@ -22,13 +22,13 @@ This is an example code which will show you your mining address.
 const NHApi = require('nicehash-api-wrapper-v2');
 const api = new NHApi({apiKey: "your api key", apiSecret: "your api secret", orgId: "your organization Id"});
 
-api.getMiningAddress().then((res) => {
+api.MinerPrivate.getMiningAddress().then((res) => {
     console.log(res);
 });
 ```
 #
 ## All implemented Endpoints
-### Miner Private
+### Miner Private (Api.MinerPrivate)
 
 
 ##### getMiningAddress()
@@ -136,6 +136,70 @@ Get statistical streams for all mining rigs.
 |beforeTimestamp||int
 
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-stats-unpaid>
+
+#
+#
+### External Miner (Api.ExternalMiner)
+
+##### getRigs(btcAddress, ?size, ?page, ?sort)
+
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|btcAddress| * |string||
+|size||int|25|
+|page||int|0|
+|sort||enum|NAME|[ "NAME", "PROFITABILITY", "ACTIVE", "INACTIVE" ]|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs2
+#
+
+##### getActiveWorkers(btcAddress, ?size, ?page, ?sortParameter, ?sortDirection)
+Getting active workers and information about active workers on external miner, such as current mining algorithm, speed, profitability, etc.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|btcAddress| * |string||
+|size||int|25|
+|page||int|0|
+|sortParameter||enum|RIG_NAME|[ "RIG_NAME", "TIME", "MARKET", "ALGORITHM", "UNPAID_AMOUNT", "DIFFICULTY", "SPEED_ACCEPTED", "SPEED_REJECTED", "PROFITABILITY" ]|
+|sortDirection||enum|ASC|[ "ASC", "DESC" ]|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-activeWorkers
+#
+
+##### getStatsAlgoStream(btcAddress, ?algorithm, ?afterTimestamp, ?beforeTimestamp)
+Get statistical streams for all mining rigs with external BTC address for selected algorithm.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|btcAddress| * |string||
+|algorithm||int|20|id of algorithm (20 = daggerhashimoto)|
+|afterTimestamp||int||
+|beforeTimestamp||int||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-stats-algo
+#
+
+##### getStatsUnpaidStream(btcAddress, ?afterTimestamp, ?beforeTimestamp)
+Get statistical streams for all mining rigs with external BTC address.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|btcAddress| * |string||
+|afterTimestamp||int||
+|beforeTimestamp||int||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-stats-unpaid
+#
+
+##### getWithdrawals(btcAddress, ?afterTimestamp, ?size, ?page)
+
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|btcAddress| * |string||
+|afterTimestamp||int||
+|size||int|100|
+|page||int|0|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-withdrawals
+#
 
 
 #
