@@ -58,10 +58,12 @@ class Api {
   constructor({ locale, apiHost, apiKey, apiSecret, orgId }) {
     this.locale = locale || "en";
     this.host = apiHost || "https://api2.nicehash.com";
-    this.key = apiKey;
-    this.secret = apiSecret;
-    this.org = orgId;
+    this.key = apiKey || null;
+    this.secret = apiSecret || null;
+    this.org = orgId || null;
     this.localTimeDiff = null;
+    this.MinerPrivate = new MinerPrivate(this);
+    this.ExternalMiner = new ExternalMiner(this);
   }
 
   /**
@@ -97,29 +99,31 @@ class Api {
       method: method,
       headers: {
         "X-Request-Id": nonce,
-        "X-User-Agent": "NHNodeClient",
+        "X-User-Agent": "NHApiWrapperV2/PascalBerski",
         "X-Time": timestamp,
         "X-Nonce": nonce,
         "X-User-Lang": this.locale,
-        "X-Organization-Id": this.org,
-        "X-Auth": getAuthHeader(
-          this.key,
-          this.secret,
-          timestamp,
-          nonce,
-          this.org,
-          {
-            method,
-            path: pathOnly,
-            query,
-            body,
-          }
-        ),
       },
       qs: query,
       body,
       json: true,
     };
+    if (this.key != null) {
+      options.headers["X-Auth"] = getAuthHeader(
+        this.key,
+        this.secret,
+        timestamp,
+        nonce,
+        this.org,
+        {
+          method,
+          path: pathOnly,
+          query,
+          body,
+        }
+      );
+      options.headers["X-Organization-Id"] = this.org;
+    }
 
     return request(options);
   }
@@ -210,8 +214,12 @@ class Api {
 
     return query;
   }
+}
 
-  ////*  MINER PRIVATE  *////
+class MinerPrivate {
+  constructor(api) {
+    this.api = api;
+  }
 
   /**
    * Getting mining address.
@@ -219,7 +227,7 @@ class Api {
    * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-miningAddress
    */
   async getMiningAddress() {
-    return await this.getRequest("/main/api/v2/mining/miningAddress");
+    return await this.api.getRequest("/main/api/v2/mining/miningAddress");
   }
 
   /**
@@ -229,10 +237,10 @@ class Api {
    */
   async getRigStatsAlgo(rigid = undefined) {
     if (rigid)
-      return await this.getRequest(
+      return await this.api.getRequest(
         "/main/api/v2/mining/algo/stats?rigId=" + rigid
       );
-    else return await this.getRequest("/main/api/v2/mining/algo/stats");
+    else return await this.api.getRequest("/main/api/v2/mining/algo/stats");
   }
 
   /**
@@ -241,7 +249,7 @@ class Api {
    * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-groups-list
    */
   async getGroupsList(extendedResponse = false) {
-    return await this.getRequest(
+    return await this.api.getRequest(
       "/main/api/v2/mining/groups/list?extendedResponse=" + extendedResponse
     );
   }
@@ -264,7 +272,7 @@ class Api {
       algorithm;
     if (afterTimestamp) url += "&afterTimestamp=" + afterTimestamp;
     if (beforeTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
-    return await this.getRequest(url);
+    return await this.api.getRequest(url);
   }
 
   /**
@@ -280,7 +288,7 @@ class Api {
     var url = "/main/api/v2/mining/rig/stats/unpaid?rigId=" + rigid;
     if (afterTimestamp) url += "&afterTimestamp=" + afterTimestamp;
     if (beforeTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
-    return await this.getRequest(url);
+    return await this.api.getRequest(url);
   }
 
   /**
@@ -289,7 +297,7 @@ class Api {
    * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rig2-rigId
    */
   async getRigInformation(rigid) {
-    return await this.getRequest("/main/api/v2/mining/rig2/" + rigid);
+    return await this.api.getRequest("/main/api/v2/mining/rig2/" + rigid);
   }
 
   /**
@@ -303,7 +311,7 @@ class Api {
     sortParameter = "RIG_NAME",
     sortDirection = "ASC"
   ) {
-    return await this.getRequest(
+    return await this.api.getRequest(
       `/main/api/v2/mining/rigs/activeWorkers?size=${size}&page=${page}&sortParameter=${sortParameter}&sortDirection=${sortDirection}`
     );
   }
@@ -316,7 +324,7 @@ class Api {
   async getPayouts(size = 10, page = 0, beforeTimestamp = undefined) {
     var url = `/main/api/v2/mining/rigs/payouts?size=${size}&page=${page}`;
     if (beforeTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
-    return await this.getRequest(url);
+    return await this.api.getRequest(url);
   }
 
   /**
@@ -332,7 +340,7 @@ class Api {
     var url = `/main/api/v2/mining/rigs/payouts?algorithm=${algorithm}`;
     if (afterTimestamp) url += "&afterTimestamp=" + afterTimestamp;
     if (beforeTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
-    return await this.getRequest(url);
+    return await this.api.getRequest(url);
   }
 
   /**
@@ -350,7 +358,7 @@ class Api {
       if (afterTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
       else url += "?beforeTimestamp=" + beforeTimestamp;
     }
-    return await this.getRequest(url);
+    return await this.api.getRequest(url);
   }
 
   //TODO: post status2
@@ -362,7 +370,7 @@ class Api {
    */
   async setRigs(parameters) {
     console.log(JSON.parse(parameters));
-    return await this.postRequest(
+    return await this.apipostRequest(
       "/main/api/v2/mining/rigs/status2",
       JSON.parse(parameters)
     );
@@ -381,7 +389,7 @@ class Api {
     system = undefined,
     status = undefined
   ) {
-    const query = this.buildQuery([
+    const query = this.api.buildQuery([
       { key: "size", value: size },
       { key: "page", value: page },
       { key: "path", value: path },
@@ -389,7 +397,83 @@ class Api {
       { key: "system", value: system },
       { key: "status", value: status },
     ]);
-    return await this.getRequest("/main/api/v2/mining/rigs2" + query);
+    return await this.api.getRequest("/main/api/v2/mining/rigs2" + query);
+  }
+}
+
+class ExternalMiner {
+  constructor(api) {
+    this.api = api;
+  }
+
+  /**
+   * List rig statuses for external miner.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs2
+   */
+  async getRigs(btcAddress, size = 25, page = 0, sort = "NAME") {
+    const query = this.api.buildQuery([
+      { key: "size", value: size },
+      { key: "page", value: page },
+      { key: "sort", value: sort }
+    ]);
+    return await this.api.getRequest("/main/api/v2/mining/external/" + btcAddress + "/rigs2" + query);
+  }
+
+  /**
+   * Getting active workers and information about active workers on external miner, such as current mining algorithm, speed, profitability, etc.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-activeWorkers
+   */
+   async getActiveWorkers(btcAddress, size = 25, page = 0, sortParameter = "RIG_NAME", sortDirection = "ASC") {
+    const query = this.api.buildQuery([
+      { key: "size", value: size },
+      { key: "page", value: page },
+      { key: "sortParameter", value: sortParameter },
+      { key: "sortDirection", value: sortDirection }
+    ]);
+    return await this.api.getRequest("/main/api/v2/mining/external/" + btcAddress + "/rigs/activeWorkers" + query);
+  }
+
+  /**
+   * Get statistical streams for all mining rigs with external BTC address for selected algorithm.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-stats-algo
+   */
+   async getStatsAlgoStream(btcAddress, algorithm = 20, afterTimestamp = null, beforeTimestamp = null) {
+    const query = this.api.buildQuery([
+      { key: "algorithm", value: algorithm },
+      { key: "afterTimestamp", value: afterTimestamp },
+      { key: "beforeTimestamp", value: beforeTimestamp }
+    ]);
+    return await this.api.getRequest("/main/api/v2/mining/external/" + btcAddress + "/rigs/stats/algo" + query);
+  }
+
+  /**
+   * Get statistical streams for all mining rigs with external BTC address.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-stats-unpaid
+   */
+   async getStatsUnpaidStream(btcAddress, afterTimestamp = null, beforeTimestamp = null) {
+    const query = this.api.buildQuery([
+      { key: "afterTimestamp", value: afterTimestamp },
+      { key: "beforeTimestamp", value: beforeTimestamp }
+    ]);
+    return await this.api.getRequest("/main/api/v2/mining/external/" + btcAddress + "/rigs/stats/unpaid" + query);
+  }
+
+  /**
+   * External miner withdrawal list.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-withdrawals
+   */
+   async getWithdrawals(btcAddress, afterTimestamp = null, size = 100, page = 0) {
+    const query = this.api.buildQuery([
+      { key: "afterTimestamp", value: afterTimestamp },
+      { key: "size", value: size },
+      { key: "page", value: page }
+    ]);
+    return await this.api.getRequest("/main/api/v2/mining/external/" + btcAddress + "/rigs/withdrawals" + query);
   }
 }
 
