@@ -138,6 +138,13 @@ Get statistical streams for all mining rigs.
 <https://www.nicehash.com/docs/rest/get-main-api-v2-mining-rigs-stats-unpaid>
 
 #
+##### setRigs({group: "", rigId: "", deviceId: "", action: "", options: ""})
+Update status for one or more rigs.
+
+https://www.nicehash.com/docs/rest/post-main-api-v2-mining-rigs-status2
+
+
+#
 #
 ### External Miner (Api.ExternalMiner)
 
