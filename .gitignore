@@ -106,3 +106,6 @@ dist
 index.js
 secret.json
 /.history
+secret.prod.json
+secret.test.json
+example.js
