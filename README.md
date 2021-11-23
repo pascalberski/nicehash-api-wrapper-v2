@@ -217,6 +217,70 @@ https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-ri
 
 https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-myOrders
 #
+#
+### Exchange Public (Api.ExchangePublic)
+
+##### getCandlesticks(market, ?to, ?from, ?countBack, ?resolution)
+Get candlesticks for specified resolution.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|market|*|enum|||
+|to||timestamp|current timestamp||
+|from||timestamp|||
+|countBack||int|||
+|resolution||int|1|
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-info-candlesticks
+#
+
+##### getMarketStats()
+Get statistics for all markets.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-info-marketStats
+#
+
+##### getPrices()
+Get list of last prices for all markets.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-info-prices
+#
+
+##### getExchangeStatus()
+Get detailed exchange status information for each market.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-info-status
+#
+
+##### getTrades(market, ?sortDirection, ?limit, timestamp)
+Get trades for specific market. Limit, sort direction and timestamp can be optionally selected.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|market|*|enum|||
+|sortDirection||enum|DESC||
+|limit||int|25||
+|timestamp||timestamp|||
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-info-trades
+#
+
+##### getOrderbook(market, ?limit)
+Get a list of asks and bids. Limit determines the size of asks and bids lists.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|market|*|enum|||
+|limit||int|25||
+
+https://www.nicehash.com/docs/rest/get-exchange-api-v2-orderbook
+#
 
 
 #
