@@ -201,7 +201,7 @@ https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-ri
 https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-rigs-withdrawals
 #
 #
-### External Miner (Api.HashPower)
+### HashPower (Api.HashPower)
 
 ##### getMyOrders(?op, ?limit, ?ts, ?algorithm, ?status, ?active, ?market)
 
