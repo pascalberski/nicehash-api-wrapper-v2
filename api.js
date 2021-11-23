@@ -516,32 +516,39 @@ class HashPower {
         this.api = api;
     }
 
+    /**
+     * Get a list of my hashpower orders matching the filtering criteria as specified by parameters included in the request.
+     * @permission VHOR
+     * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-myOrders
+     */
     async getMyOrders(
-        algorithm = 20,
-        afterTimestamp = undefined,
-        beforeTimestamp = undefined
+        op = "GT",
+        limit = 100,
+        ts = undefined,
+        algorithm = undefined,
+        status = undefined,
+        active = undefined,
+        market = undefined
     ) {
-        console.log("getMyOrders started");
-
         const date = new Date();
 
         function seconds_since_epoch(d) {
             return Math.floor(d / 1);
         }
 
-        var sec = seconds_since_epoch(date);
-
-        console.log("sec - ", sec);
+        if (ts == undefined) ts = seconds_since_epoch(date);
 
         const query = this.api.buildQuery([
-            { key: "op", value: "LE" },
-            { key: "limit", value: 10 },
-            { key: "ts", value: sec }
+            { key: "op", value: op },
+            { key: "limit", value: limit },
+            { key: "algorithm", value: algorithm },
+            { key: "ts", value: ts },
+            { key: "status", value: status },
+            { key: "active", value: active },
+            { key: "market", value: market }
         ]);
 
         var url = `/main/api/v2/hashpower/myOrders`;
-        if (afterTimestamp) url += "&afterTimestamp=" + afterTimestamp;
-        if (beforeTimestamp) url += "&beforeTimestamp=" + beforeTimestamp;
         return await this.api.getRequest(url + query);
         //return true;
     }
