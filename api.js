@@ -181,7 +181,7 @@ class Api {
     var ret = "NULL";
 
     await this.getTime()
-      .then(() => this.post(url, body))
+      .then(() => this.post(url, { body }))
       .then((res) => {
         ret = res;
       })
@@ -361,7 +361,6 @@ class MinerPrivate {
     return await this.api.getRequest(url);
   }
 
-  //TODO: post status2
   /**
    * Update status for one or more rigs.
    * @param parameters group, rigId, deviceId, action, options
@@ -369,10 +368,9 @@ class MinerPrivate {
    * @description https://www.nicehash.com/docs/rest/post-main-api-v2-mining-rigs-status2
    */
   async setRigs(parameters) {
-    console.log(JSON.parse(parameters));
-    return await this.apipostRequest(
+    return await this.api.postRequest(
       "/main/api/v2/mining/rigs/status2",
-      JSON.parse(parameters)
+      parameters
     );
   }
 
