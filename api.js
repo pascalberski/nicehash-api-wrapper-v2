@@ -198,6 +198,48 @@ class Api {
   /**
    * @private
    */
+  async putRequest(url, body) {
+    var ret = "NULL";
+
+    await this.getTime()
+      .then(() => this.put(url, { body }))
+      .then((res) => {
+        ret = res;
+      })
+      .catch((err) => {
+        if (err && err.response)
+          console.error(
+            err.response.request.method,
+            err.response.request.uri.href
+          );
+        console.error("ERROR", err.error || err);
+      });
+    return ret;
+  }
+  /**
+   * @private
+   */
+  async deleteRequest(url) {
+    var ret = "NULL";
+
+    await this.getTime()
+      .then(() => this.delete(url))
+      .then((res) => {
+        ret = res;
+      })
+      .catch((err) => {
+        if (err && err.response)
+          console.error(
+            err.response.request.method,
+            err.response.request.uri.href
+          );
+        console.error("ERROR", err.error || err);
+      });
+    return ret;
+  }
+  /**
+   * @private
+   */
   buildQuery(parameters = []) {
     var first = true;
     var query = "";
@@ -550,7 +592,88 @@ class HashPower {
 
     var url = `/main/api/v2/hashpower/myOrders`;
     return await this.api.getRequest(url + query);
-    //return true;
+  }
+
+  /**
+   * Create hashpower order.
+   * @permission PRCO
+   * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order
+   */
+  async createOrder(parameters) {
+    return await this.api.postRequest(
+      "/main/api/v2/hashpower/order",
+      parameters
+    );
+  }
+
+  /**
+   * Get hashpower order detailed information using order id.
+   * @permission VHOR
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-order-id
+   */
+  async getOrder(id) {
+    var url = `/main/api/v2/hashpower/order/${id}`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Cancel hashpower order using order id.
+   * @permission PRCO
+   * @description https://www.nicehash.com/docs/rest/delete-main-api-v2-hashpower-order-id
+   */
+  async deleteOrder(id) {
+    var url = `/main/api/v2/hashpower/order/${id}`;
+    return await this.api.deleteRequest(url);
+  }
+
+  /**
+   * When order is active, amount on the order can be increased and prolong duration of active order in marketplace. The limitation for minimal and maximal amount are defined for each algorithm and can be fetched using /main/api/v2/public/buy/info endpoint.
+   * @permission PRCO
+   * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order-id-refill
+   */
+  async refillOrder(id, amount) {
+    return await this.api.postRequest(
+      `/main/api/v2/hashpower/order/${id}/refill`,
+      { amount: amount }
+    );
+  }
+
+  /**
+   * Get statistical streams for selected order using order id.
+   * @permission VHOR
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-myOrders
+   */
+  async getOrderStats(id, afterTimestamp = undefined) {
+    const query = this.api.buildQuery([
+      { key: "afterTimestamp", value: afterTimestamp },
+    ]);
+
+    var url = `/main/api/v2/hashpower/order/${id}/stats`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * At any time order speed limit and price can be altered when hashpower order is active.
+   * @permission ELCO
+   * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order-id-updatePriceAndLimit
+   */
+   async updatePriceAndLimit(id, parameters) {
+    return await this.api.postRequest(
+      `/main/api/v2/hashpower/order/${id}/updatePriceAndLimit`,
+      parameters
+    );
+  }
+
+  /**
+   * Estimated duration of a hashpower order from the order type, amount, price and limit. The maximal value for STANDARD order is 10 days
+   * @permission PRCO
+   * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-orders-calculateEstimateDuration
+   */
+   async calculateEstimateDuration(parameters) {
+    return await this.api.postRequest(
+      `/main/api/v2/hashpower/orders/calculateEstimateDuration`,
+      parameters
+    );
   }
 }
 
