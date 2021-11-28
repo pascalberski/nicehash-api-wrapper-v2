@@ -657,7 +657,7 @@ class HashPower {
    * @permission ELCO
    * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order-id-updatePriceAndLimit
    */
-   async updatePriceAndLimit(id, parameters) {
+  async updatePriceAndLimit(id, parameters) {
     return await this.api.postRequest(
       `/main/api/v2/hashpower/order/${id}/updatePriceAndLimit`,
       parameters
@@ -669,11 +669,135 @@ class HashPower {
    * @permission PRCO
    * @description https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-orders-calculateEstimateDuration
    */
-   async calculateEstimateDuration(parameters) {
+  async calculateEstimateDuration(parameters) {
     return await this.api.postRequest(
       `/main/api/v2/hashpower/orders/calculateEstimateDuration`,
       parameters
     );
+  }
+
+  /**
+   * Hashpower order book for specified algorithm. Response contains orders for all markest and their stats. When there a lot of orders, response will be paged.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orderBook
+   */
+  async getOrderBook(algorithm, size = 100, page = 0) {
+    const query = this.api.buildQuery([
+      { key: "algorithm", value: algorithm },
+      { key: "size", value: size },
+      { key: "page", value: page },
+    ]);
+
+    var url = `/main/api/v2/hashpower/orderBook`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get accepted and rejected speeds for rigs and pools, rig count and paying price for selected market and/or algorithm. When no market or algorithm is specified all markets and algorithms are returned.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orders-summaries
+   */
+  async getOrderSummaries(market = undefined, algorithm = undefined) {
+    const query = this.api.buildQuery([
+      { key: "algorithm", value: algorithm },
+      { key: "market", value: market },
+    ]);
+
+    var url = `/main/api/v2/hashpower/orders/summaries`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get accepted and rejected speed from pools and rigs, rig count and paying price for selected market and algorithm.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orders-summary
+   */
+  async getOrderSummary(market, algorithm) {
+    const query = this.api.buildQuery([
+      { key: "algorithm", value: algorithm },
+      { key: "market", value: market },
+    ]);
+
+    var url = `/main/api/v2/hashpower/orders/summary`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Whole history for the selected algorithm.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-algo-history
+   */
+  async getAlgoHistory(algorithm) {
+    const query = this.api.buildQuery([{ key: "algorithm", value: algorithm }]);
+
+    var url = `/main/api/v2/public/algo/history`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Information for each enabled algorithm needed for buying hashpower.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-buy-info
+   */
+  async getBuyInfo() {
+    var url = `/main/api/v2/public/buy/info`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get all hashpower orders. Request parameter work as filter to fine tune the result. The result is paged, when needed.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-orders
+   */
+  async getOrders(
+    algorithm = undefined,
+    market = undefined,
+    op = undefined,
+    timestamp = undefined,
+    page = 0,
+    size = 100
+  ) {
+    const query = this.api.buildQuery([
+      { key: "algorithm", value: algorithm },
+      { key: "market", value: market },
+      { key: "op", value: op },
+      { key: "timestamp", value: timestamp },
+      { key: "page", value: page },
+      { key: "size", value: size },
+    ]);
+
+    var url = `/main/api/v2/public/orders`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get information about speed and price for each enabled algorithm.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-simplemultialgo-info
+   */
+  async getSimpleStatus() {
+    var url = `/main/api/v2/public/simplemultialgo/info`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get average price and hashpower speed for all enabled algorithms in average for past 24 hours.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-stats-global-24h
+   */
+  async getStats24h() {
+    var url = `/main/api/v2/public/stats/global/24h`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get current price and hashpower speed for all enabled algorithms in average for last 5 minutes.
+   * @permission none
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-public-stats-global-current
+   */
+  async getStatsCurrent() {
+    var url = `/main/api/v2/public/stats/global/current`;
+    return await this.api.getRequest(url);
   }
 }
 

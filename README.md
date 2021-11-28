@@ -286,6 +286,96 @@ Use parameters from API-doc as JSON.
 https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-orders-calculateEstimateDuration
 #
 
+##### getOrderBook(algorithm, ?size, ?page)
+Hashpower order book for specified algorithm. Response contains orders for all markest and their stats. When there a lot of orders, response will be paged.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|algorithm|*|enum|||
+|size||int|100||
+|page||int|0||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orderBook
+#
+
+##### getOrderSummaries(?market, ?algorithm)
+Get accepted and rejected speeds for rigs and pools, rig count and paying price for selected market and/or algorithm. When no market or algorithm is specified all markets and algorithms are returned.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|market||enum|||
+|algorithm||enum|||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orders-summaries
+#
+
+##### getOrderSummary(market, algorithm)
+Get accepted and rejected speed from pools and rigs, rig count and paying price for selected market and algorithm.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|market|*|enum|||
+|algorithm|*|enum|||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-orders-summary
+#
+
+##### getAlgoHistory(algorithm)
+Whole history for the selected algorithm.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|algorithm|*|enum|||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-algo-history
+#
+
+##### getBuyInfo()
+Information for each enabled algorithm needed for buying hashpower.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-buy-info
+#
+
+##### getOrders(?algorithm, ?market, ?op, ?timestamp, ?page, ?size)
+Get all hashpower orders. Request parameter work as filter to fine tune the result. The result is paged, when needed.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|algorithm||enum|||
+|market||enum|||
+|op||enum|||
+|timestamp||timestamp|||
+|page||int|0||
+|size||int|100||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-orders
+#
+
+##### getSimpleStatus()
+Get information about speed and price for each enabled algorithm.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-simplemultialgo-info
+#
+
+##### getStats24h()
+Get average price and hashpower speed for all enabled algorithms in average for past 24 hours.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-stats-global-24h
+#
+
+##### getStatsCurrent()
+Get current price and hashpower speed for all enabled algorithms in average for last 5 minutes.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|none|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-public-stats-global-current
+#
+
 #
 ### Exchange Public (Api.ExchangePublic)
 
