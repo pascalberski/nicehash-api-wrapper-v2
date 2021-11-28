@@ -641,7 +641,7 @@ class HashPower {
   /**
    * Get statistical streams for selected order using order id.
    * @permission VHOR
-   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-myOrders
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-order-id-stats
    */
   async getOrderStats(id, afterTimestamp = undefined) {
     const query = this.api.buildQuery([

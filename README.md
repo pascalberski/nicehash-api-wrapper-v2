@@ -224,6 +224,68 @@ https://www.nicehash.com/docs/rest/get-main-api-v2-mining-external-btcAddress-ri
 
 https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-myOrders
 #
+
+##### createOrder({parameters})
+Create hashpower order. Use parameters from API-doc as JSON.
+
+https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order
+#
+
+##### getOrder(id)
+Get hashpower order detailed information using order id.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|id|*|||order id|
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-order-id
+#
+
+##### deleteOrder(id)
+Cancel hashpower order using order id.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|id|*|||order id|
+
+https://www.nicehash.com/docs/rest/delete-main-api-v2-hashpower-order-id
+#
+
+##### refillOrder(id, amount)
+When order is active, amount on the order can be increased and prolong duration of active order in marketplace. The limitation for minimal and maximal amount are defined for each algorithm and can be fetched using /main/api/v2/public/buy/info endpoint.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|id|*|||order id|
+|amount|*|int|||
+
+https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order-id-refill
+#
+
+##### getOrderStats(id, ?afterTimestamp)
+Get statistical streams for selected order using order id.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|id|*|||order id|
+|afterTimestamp||timestamp||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-hashpower-order-id-stats
+#
+
+##### updatePriceAndLimit(id, {parameters})
+At any time order speed limit and price can be altered when hashpower order is active.
+Use parameters from API-doc as JSON.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|id|*|||order id|
+
+https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-order-id-updatePriceAndLimit
+#
+
+##### calculateEstimateDuration({parameters})
+Estimated duration of a hashpower order from the order type, amount, price and limit. The maximal value for STANDARD order is 10 days.
+Use parameters from API-doc as JSON.
+
+https://www.nicehash.com/docs/rest/post-main-api-v2-hashpower-orders-calculateEstimateDuration
+#
+
 #
 ### Exchange Public (Api.ExchangePublic)
 
