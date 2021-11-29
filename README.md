@@ -146,6 +146,62 @@ https://www.nicehash.com/docs/rest/post-main-api-v2-mining-rigs-status2
 
 #
 #
+### Accounting (Api.Accounting)
+
+##### getBalance(currency, ?extendedResponse)
+Get balance for selected currency.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|currency|*|enum|||
+|extendedResponse||bool|false||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-account2-currency
+#
+##### getBalances(?extendedResponse, ?fiat)
+Get total balance and for each currency separated.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|extendedResponse||bool|false||
+|fiat||string||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-accounts2
+#
+##### getActivities(currency, ?type, ?timestamp, ?stage, ?limit)
+Get activities for specified currency matching the filtering criteria as specified by request parameters.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|currency|*|enum||
+|type||enum||
+|timestamp||timestamp||
+|stage||enum||
+|limit||int|10||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-activity-currency
+#
+##### getDepositAddresses(currency, ?walletType)
+Get deposit address for selected currency for all wallet types.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|currency|*|enum||
+|walletType||enum||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-depositAddresses
+#
+##### getDeposits(currency, ?statuses, ?op, ?timestamp, ?page, ?limit)
+List of deposit transactions details matching the filtering criteria as specified by request parameters.
+| Parameter | required | type| default | remark |
+| ----- | ----- | ----- | ----- | ----- |
+|currency|*|enum||
+|statuses||array||
+|op||enum|LT||
+|timestamp||timestamp||
+|page||int|0||
+|size||int|100||
+
+https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-deposits-currency
+#
+
+#
 ### External Miner (Api.ExternalMiner)
 
 ##### getRigs(btcAddress, ?size, ?page, ?sort)
