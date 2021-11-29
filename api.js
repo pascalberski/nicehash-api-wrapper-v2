@@ -66,6 +66,7 @@ class Api {
     this.ExternalMiner = new ExternalMiner(this);
     this.HashPower = new HashPower(this);
     this.ExchangePublic = new ExchangePublic(this);
+    this.Accounting = new Accounting(this);
   }
 
   /**
@@ -255,6 +256,289 @@ class Api {
     });
 
     return query;
+  }
+}
+
+class Accounting {
+  constructor(api) {
+    this.api = api;
+  }
+
+  /**
+   * Get balance for selected currency.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-account2-currency
+   */
+  async getBalance(currency, extendedResponse = false) {
+    const query = this.api.buildQuery([
+      { key: "extendedResponse", value: extendedResponse },
+    ]);
+
+    var url = `/main/api/v2/accounting/account2/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get total balance and for each currency separated.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-accounts2
+   */
+  async getBalances(extendedResponse = false, fiat = undefined) {
+    const query = this.api.buildQuery([
+      { key: "extendedResponse", value: extendedResponse },
+      { key: "fiat", value: fiat },
+    ]);
+
+    var url = `/main/api/v2/accounting/accounts2`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get activities for specified currency matching the filtering criteria as specified by request parameters.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-activity-currency
+   */
+  async getActivities(
+    currency,
+    type = undefined,
+    timestamp = undefined,
+    stage = "ALL",
+    limit = 10
+  ) {
+    const query = this.api.buildQuery([
+      { key: "type", value: type },
+      { key: "timestamp", value: timestamp },
+      { key: "stage", value: stage },
+      { key: "limit", value: limit },
+    ]);
+
+    var url = `/main/api/v2/accounting/activity/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get deposit address for selected currency for all wallet types.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-depositAddresses
+   */
+  async getDepositAddresses(currency, walletType = undefined) {
+    const query = this.api.buildQuery([
+      { key: "currency", value: currency },
+      { key: "walletType", value: walletType },
+    ]);
+
+    var url = `/main/api/v2/accounting/depositAddresses`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * List of deposit transactions details matching the filtering criteria as specified by request parameters.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-deposits-currency
+   */
+  async getDeposits(
+    currency,
+    statuses = undefined,
+    op = "LT",
+    timestamp = undefined,
+    page = 0,
+    size = 100
+  ) {
+    const query = this.api.buildQuery([
+      { key: "statuses", value: statuses },
+      { key: "op", value: op },
+      { key: "timestamp", value: timestamp },
+      { key: "page", value: page },
+      { key: "size", value: size },
+    ]);
+
+    var url = `/main/api/v2/accounting/deposits/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get specific deposit with deposit order id and currency.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-deposits2-currency-id
+   */
+  async getDeposit(currency, id) {
+    var url = `/main/api/v2/accounting/deposits2/${currency}/${id}`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get all transaction for selected exchange order using exchange order id and market pair.
+   * @permission EXOR
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-exchange-id-trades
+   */
+  async getExchangeOrderTransactions(id, exchangeMarket) {
+    const query = this.api.buildQuery([
+      { key: "exchangeMarket", value: exchangeMarket },
+    ]);
+
+    var url = `/main/api/v2/accounting/exchange/${id}/trades`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * List of all transactions for selected hashpower order using hashpower order.
+   * @permission VHOR
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-hashpower-id-transactions
+   */
+  async getHashpowerOrderTransactions(id, limit = 100, timestamp = undefined) {
+    const query = this.api.buildQuery([
+      { key: "limit", value: limit },
+      { key: "timestamp", value: timestamp },
+    ]);
+
+    var url = `/main/api/v2/accounting/hashpower/${id}/transactions`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get list of mining payments
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-hashpowerEarnings-currency
+   */
+  async getHashpowerEarnings(
+    currency,
+    timestamp = undefined,
+    page = 0,
+    size = 100
+  ) {
+    const query = this.api.buildQuery([
+      { key: "page", value: page },
+      { key: "size", value: size },
+      { key: "timestamp", value: timestamp },
+    ]);
+
+    var url = `/main/api/v2/accounting/hashpowerEarnings/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get transaction by transaciton id and currency.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-transaction-currency-transactionId
+   */
+  async getTransaction(currency, transactionId) {
+    var url = `/main/api/v2/accounting/transaction/${currency}/${transactionId}`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get all transactions for selected currency matching the filtering criteria as specified by request parameters.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-transactions-currency
+   */
+  async getTransactions(
+    currency,
+    type = undefined,
+    purposes = undefined,
+    op = undefined,
+    timestamp = undefined,
+    size = 10
+  ) {
+    const query = this.api.buildQuery([
+      { key: "type", value: type },
+      { key: "size", value: size },
+      { key: "timestamp", value: timestamp },
+      { key: "purposes", value: purposes },
+      { key: "op", value: op },
+    ]);
+
+    var url = `/main/api/v2/accounting/transactions/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get account withdrawal by currency and id.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-withdrawal2-currency-id
+   */
+  async getWithdrawal(currency, id) {
+    var url = `/main/api/v2/accounting/withdrawal2/${currency}/${id}`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get withdrawal address by widrawal address id.
+   * @permission WIFU
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-withdrawalAddress-id
+   */
+  async getWithdrawalAddress(id) {
+    var url = `/main/api/v2/accounting/withdrawalAddress/${id}`;
+    return await this.api.getRequest(url);
+  }
+
+  /**
+   * Get all transactions for selected currency matching the filtering criteria as specified by request parameters.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-transactions-currency
+   */
+  async getWithdrawalAddresses(
+    currency = undefined,
+    type = undefined,
+    size = 100,
+    page = 0
+  ) {
+    const query = this.api.buildQuery([
+      { key: "type", value: type },
+      { key: "size", value: size },
+      { key: "currency", value: currency },
+      { key: "page", value: page },
+    ]);
+
+    var url = `/main/api/v2/accounting/withdrawalAddresses`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Get list of withdrawals matching the filtering criteria as specified by request parameters.
+   * @permission VBTD
+   * @description https://www.nicehash.com/docs/rest/get-main-api-v2-accounting-withdrawals-currency
+   */
+  async getWithdrawals(
+    currency = undefined,
+    statuses = undefined,
+    op = "LT",
+    timestamp = undefined,
+    size = 100,
+    page = 0
+  ) {
+    const query = this.api.buildQuery([
+      { key: "op", value: op },
+      { key: "size", value: size },
+      { key: "statuses", value: statuses },
+      { key: "page", value: page },
+      { key: "timestamp", value: timestamp },
+    ]);
+
+    var url = `/main/api/v2/accounting/withdrawals/${currency}`;
+    return await this.api.getRequest(url + query);
+  }
+
+  /**
+   * Create withdrawal request with whitelisted address using withdraw address id.
+   * @permission WIFU
+   * @description https://www.nicehash.com/docs/rest/post-main-api-v2-accounting-withdrawal
+   */
+  async createWithdrawal(currency, amount, withdrawalAddressId) {
+    return await this.api.postRequest(`/main/api/v2/accounting/withdrawal`, {
+      currency: currency,
+      amount: amount,
+      withdrawalAddressId: withdrawalAddressId,
+    });
+  }
+
+  /**
+   * Cancel withdrawal using withdrawal id and currency.
+   * @permission WIFU
+   * @description https://www.nicehash.com/docs/rest/delete-main-api-v2-accounting-withdrawal-currency-id
+   */
+  async cancelWithdrawal(currency, id) {
+    var url = `/main/api/v2/accounting/withdrawal/${currency}/${id}`;
+    return await this.api.deleteRequest(url);
   }
 }
 
